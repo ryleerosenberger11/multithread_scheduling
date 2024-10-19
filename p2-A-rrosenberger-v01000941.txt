@@ -1,0 +1,39 @@
+Rylee Rosenberger
+V0100941
+CSC 360
+P3 design
+
+I plan to use one thread to represent each train (one thread per train).
+
+There will be one main/controller thread that acts as a dispatcher. 
+
+There will be one mutex. When a train crosses, it will release the mutex so that the next train is able to acquire the mutex. 
+The mutex will guard the crossing track, ensuring that only one train at a time will lock the mutex, acquire it, and cross the track.
+
+The main/dispatcher thread will create the train threads, start all trains loading, and, in a loop, check for ready trains 
+and select which train gets to cross. This thread will terminate when all trains have crossed.
+
+Stations will be represented within a queue. As each train is ready to depart, it will be added to the queue. 
+Positioning in the queue will be based on each train’s time to complete loading and each train’s priority.
+
+Data structures within the program will not be modified concurrently due to the use of mutex and conditional variables. 
+The shared mutex will only be able to be acquired by the next ready train once the current train crosses the track and releases it.
+
+Each train will be represented as a struct, and each train will have a local convar. The train’s convar will represent 
+whether or not the train has completed loading and is ready to cross the track. The single shared mutex will be associated 
+with each train’s convar. Once pthread_cond_wait() has been unblocked, that means the previous train to cross has released the mutex, 
+and the current train that has acquired the mutex can cross the track.
+
+Algorithm sketch:
+Create main thread. In main thread:
+	Read from input file and create train threads. Initialize each train with status (condvar), load_time, cross_time.
+	Broadcast for all trains to start loading at the same time.
+	In train thread:
+        Start loading when signal from dispatcher is recieved.
+		If train has finished loading, update status, add to queue and signal train is ready. Attempt to acquire mutex while ready.
+		Wait for signal from dispatcher to cross -> cross when mutex is acquired, then exit (terminate train thread).
+		Add one to counter of # of trains that have crossed.
+	While not all trains have crossed:
+		Check for ready trains. 
+		Signal to next train when track is empty, and wait until crossing completes.
+	Terminate main thread once all trains have crossed (count of trains that have crossed == count of trains in input file).
