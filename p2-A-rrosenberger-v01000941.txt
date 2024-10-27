@@ -37,3 +37,5 @@ Create main thread. In main thread:
 		Check for ready trains. 
 		Signal to next train when track is empty, and wait until crossing completes.
 	Terminate main thread once all trains have crossed (count of trains that have crossed == count of trains in input file).
+
+	"Looks good."
