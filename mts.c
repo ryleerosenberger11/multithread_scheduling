@@ -226,24 +226,6 @@ void *train_routine(void *arg){
                 cur_train->direction); 
 
     pthread_mutex_unlock(&lock_file);
-/*
-    pthread_mutex_lock(&lock_track);
-    //wait for signal TO SPECIFIC TRAIN from dispatcher 
-    while(!cur_train->dispatch_signal){
-        printf("wait..\n");
-        pthread_cond_wait(&(cur_train->status), &lock_track); //lock_track?
-    }
-    //critical section (lock_track acquired)
-        printf("signal for train %d acquired\n", cur_train->id);
-
-        pthread_mutex_lock(&lock_file);
-
-        print_simulation_time(start_time, output);
-        fprintf(output, "Train %2d is ON the main track going %4s\n", 
-                cur_train->id, 
-                cur_train->direction); 
-
-        pthread_mutex_unlock(&lock_file); */
               
     //cross the track
     pthread_mutex_lock(&lock_track);
