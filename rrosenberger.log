@@ -265,7 +265,7 @@ signal for train 4 acquired
 00:00:00.9 Train  4 is ON the main track going East
 00:00:01.0 Train  4 is OFF the main track after going East
 2024/11/13 18:51:05 Do you want to award mark for this test? (y/n or input a floating number between [0, 2.00]): 
-2024/11/13 18:51:14 mark received: 0
+2024/11/13 18:51:14 mark received: 1
 2024/11/13 18:51:15 
 
 [testExecMTSMultiple] Testing input case 5
@@ -488,4 +488,4 @@ signal for train 20 acquired
 2024/11/13 18:51:24 ==== Test name: testExecMTSMultiple, Mark received: 9.00 ====
 
 2024/11/13 18:51:25 
-==== Final Grade: 13.000000====
+==== Final Grade: 13.000000==== (+1 partial mark, final: 14.0)
