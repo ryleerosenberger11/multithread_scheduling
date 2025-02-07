@@ -1,28 +1,39 @@
 Rylee Rosenberger
-v01000941
 
-CSC360 p2 - multi thread scheduling
+multi thread scheduling
 
 TO RUN THIS PROGRAM:
 make
 ./mts input.txt
 
-mts has been fully implemented. The program successfully does the following:
+This program does the following:
 
 Reads the input file, which is provided as a parameter when the
 program is run, e.g. ./mts input.txt. It uses fscanf to read the
 input file in the expected format.
 
-The program sucessfully follows the simulation rules as outlined in 
-3.2 of the p2 spec. It does this via use of 4 priority queues: low
+The program sucessfully follows the simulation rules via use of 4 priority queues: low
 priority east, high priority east, low priority west, and high
-priority west. To prevent starvation, if an eastbound and westbound train of the same priority are both waiting, the train travelling
-opposite to the last train that crossed gets to go.
-*note: "To avoid starvation, if there are two trains in the same direction traveling through the main track back to back, the trains waiting in the opposite direction get a chance to dispatch one train if any." was not considered in the train signalling logic.
+priority west. The rules enforced by the automated control system are:
 
-The program outputs to a file "output.txt" as expected, following the
+Only one train is on the main track at any given time.
+Only loaded trains can cross the main track.
+If there are multiple loaded trains, the one with the high priority crosses.
+If two loaded trains have the same priority, then:
+
+If they are both traveling in the same direction, the train which finished loading first gets the clearance to cross first. 
+If they finished loading at the same time, the one that appeared first in the input file gets the clearance to cross first.
+If they are traveling in opposite directions, pick the train which will travel in the direction opposite of which the last 
+train to cross the main track traveled. If no trains have crossed the main track yet, the Westbound train has the priority.
+
+To avoid starvation, if there are two trains in the same direction traveling through the main track back to back, the trains 
+waiting in the opposite direction get a chance to dispatch one train if any.
+To prevent starvation, if an eastbound and westbound train of the same priority are both waiting, the train travelling
+opposite to the last train that crossed gets to go.
+
+The program outputs to a file "output.txt", following the
 format CLOCK, TRAIN ID, STATUS, DIRECTION.
-This ouput log is appended at each status update for the train:
+This output log is appended at each status update for the train:
 when ready, when crossing, and when cleared.
 
 The program uses 4 mutexes, one for track access, one for queue
